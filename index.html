@@ -104,8 +104,26 @@
             color: #000;
             margin-top: 0.5rem;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+            display: inline-block;
+        }
+
+        .social-link {
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
         }
         
+        .social-link img {
+            width: 40px;
+            height: auto;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .social-link img:hover {
+            transform: scale(1.1);
+        }
+
         .roast-box {
             background: var(--box-bg);
             border: 3px dashed #000;
@@ -117,7 +135,7 @@
             align-items: center;
             margin-bottom: 2rem;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            cursor: pointer; /* A kurzor jelzi, hogy kattintható */
+            cursor: pointer;
         }
         
         .roast-text {
@@ -183,7 +201,7 @@
     </style>
 </head>
 <body>
-    <!-- Véletlenszerűen lebegő mém karakterek a háttérben -->
+    <!-- Randomly floating meme characters in the background -->
     <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 10%; left: 5%;">
     <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 30%; left: 80%;">
     <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 55%; left: 15%;">
@@ -199,22 +217,24 @@
     
     <div class="container">
         <header>
-            <h1 class="logo">ROASTER</h1>
-            <p class="tagline">Generate a random roast and share it with your ROASTER community to laugh together. Or cry.</p>
-       <a href="https://twitter.com/your-profile" target="_blank" class="social-link">
+            <div>
+                <h1 class="logo">ROASTER</h1>
+                <p class="tagline">Generate a random roast and share it with your crypto community to laugh together. Or cry.
+                    <!-- Insert the Twitter/X link here. -->
+                    <a href="https://twitter.com/your-profile" target="_blank" class="social-link">
                         <img src="https://pngdownload.io/wp-content/uploads/2023/12/X-logo-social-media-icon-transparent-png-jpg-1536x1536.webp" alt="X (Twitter) Icon">
                     </a>
                 </p>
             </div>
- </header>
+        </header>
 
         <main>
             <div id="roast-box" class="roast-box">
-                <p id="roast-text" class="roast-text">Click the button to send your first roast to the moon.</p>
+                <p id="roast-text" class="roast-text">Click the button to send the first roast to the moon.</p>
             </div>
             <button id="generate-btn" class="generate-btn">GENERATE ROAST</button>
 
-            <!-- Új szövegdoboz a token címének -->
+            <!-- New text box for the token address -->
             <div id="token-address-box" class="token-address-box">
                 <p id="token-address">CA: 0xAbcDeFg1234567890aBcDeFg1234567890aBcDeF</p>
             </div>
@@ -357,7 +377,7 @@
                 return selectedRoast;
             }
 
-            // Gomb kattintás kezelése
+            // Button click handler
             generateBtn.addEventListener('click', () => {
                 const roast = getRandomRoast();
                 roastTextElement.textContent = roast;
@@ -368,7 +388,7 @@
                 }, 500);
             });
 
-            // Roast szöveg másolása kattintásra
+            // Copy roast text on click
             roastBox.addEventListener('click', () => {
                 const textToCopy = roastTextElement.textContent;
                 navigator.clipboard.writeText(textToCopy).then(() => {
@@ -382,7 +402,7 @@
                 });
             });
 
-            // Token cím másolása kattintásra
+            // Copy token address on click
             tokenAddressBox.addEventListener('click', () => {
                 const addressText = tokenAddressElement.textContent.replace('CA: ', '').trim();
                 navigator.clipboard.writeText(addressText).then(() => {
