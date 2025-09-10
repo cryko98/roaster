@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROASTER - The Ultimate Crypto Roast Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FFFFFF;
+            --text-color: #ff6347;
+            --accent-color: #ffde59;
+            --box-bg: rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes wiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        @keyframes shake-animation {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        
+        body {
+            font-family: 'Bangers', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-meme {
+            position: absolute;
+            width: 150px;
+            height: auto;
+            opacity: 0.15;
+            z-index: 1;
+            animation: float 4s infinite ease-in-out;
+        }
+        
+        .shake-animation {
+            animation: shake-animation 0.5s cubic-bezier(.36, .07, .19, .97) both;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        header {
+            padding-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-shadow: 
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000,
+                0 0 10px var(--accent-color),
+                0 0 20px var(--accent-color);
+            animation: wiggle 0.5s infinite ease-in-out;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: #000;
+            margin-top: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+        
+        .roast-box {
+            background: var(--box-bg);
+            border: 3px dashed #000;
+            border-radius: 15px;
+            padding: 2rem;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            cursor: pointer; /* A kurzor jelzi, hogy kattintható */
+        }
+        
+        .roast-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #000;
+            opacity: 0.8;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+        }
+        
+        .generate-btn {
+            background-color: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--accent-color);
+        }
+        
+        .generate-btn:hover {
+            transform: scale(1.05) rotate(-3deg);
+            box-shadow: 0 0 25px var(--accent-color), 0 0 50px var(--accent-color);
+        }
+
+        .token-address-box {
+            background: var(--box-bg);
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .token-address-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .token-address-box p {
+            margin: 0;
+            font-size: 1rem;
+            color: #000;
+            font-weight: bold;
+            text-shadow: none;
+        }
+
+        footer {
+            margin-top: 5rem;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            color: #888;
+            font-size: 0.8rem;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Véletlenszerűen lebegő mém karakterek a háttérben -->
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 10%; left: 5%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 30%; left: 80%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 55%; left: 15%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 75%; left: 60%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 20%; left: 45%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 85%; left: 30%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 40%; left: 90%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 60%; left: 50%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 5%; left: 70%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 90%; left: 10%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 25%; left: 25%;">
+    <img src="https://www.pngkey.com/png/detail/85-858800_image-gallery-lol-meme-lol-meme-transparent.png" alt="Meme character" class="background-meme" style="top: 70%; left: 40%;">
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">ROASTER</h1>
+            <p class="tagline">Generate a random roast and share it with your crypto community to laugh together. Or cry.</p>
+        </header>
+
+        <main>
+            <div id="roast-box" class="roast-box">
+                <p id="roast-text" class="roast-text">Click the button to send your first roast to the moon.</p>
+            </div>
+            <button id="generate-btn" class="generate-btn">GENERATE ROAST</button>
+
+            <!-- Új szövegdoboz a token címének -->
+            <div id="token-address-box" class="token-address-box">
+                <p id="token-address">CA: 0xAbcDeFg1234567890aBcDeFg1234567890aBcDeF</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 ROASTER. All rights reserved.</p>
+        </footer>
+    </div>
+    <script>
+        const allRoasts = [
+            "Your portfolio is so small, you can use it as a coaster.",
+            "You're so bad at crypto, your paper wallet is a paper bag.",
+            "You have more failed projects than a high school science fair.",
+            "Your bags are so heavy, they're causing a black hole in the blockchain.",
+            "You still think 'hard fork' is something you do with a steak.",
+            "You bought the top so many times, you have your own skyscraper on the chart.",
+            "Your trading strategy is just asking Twitter if a coin will moon.",
+            "You're the reason they say 'do your own research,' because yours is non-existent.",
+            "You're still waiting for your airdrop from 2018.",
+            "Your crypto wallet has more dust than a desert.",
+            "The only Lambo you'll ever own is a toy model.",
+            "You're so deep in the red, you're the new mascot for the blood bank.",
+            "You call yourself a 'whale,' but you're just a minnow in a big pond.",
+            "Your chart analysis looks like a toddler's scribble.",
+            "You think DeFi is a new type of coffee.",
+            "Your diamond hands turned to paper the first time you saw a red candle.",
+            "You're the person who sold Bitcoin to buy a pizza.",
+            "The only 'utility' your token has is to remind you of your poor financial decisions.",
+            "You're so early, you're still mining on a potato.",
+            "You FOMO'd into so many scams, you should be a case study for financial literacy.",
+            "You're still trying to get your wallet seed phrase back from a phishing email.",
+            "Your exit strategy is a prayer and a hope.",
+            "You have more paper hands than a stationery store.",
+            "You're the reason they say 'not your keys, not your coins.'",
+            "You still think Dogecoin will hit a dollar.",
+            "You're so rekt, you're now a permanent resident of the liquidation cemetery."
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const generateBtn = document.getElementById('generate-btn');
+            const roastBox = document.getElementById('roast-box');
+            const roastTextElement = document.getElementById('roast-text');
+            const tokenAddressBox = document.getElementById('token-address-box');
+            const tokenAddressElement = document.getElementById('token-address');
+
+            let availableRoasts = [...allRoasts];
+            
+            function getRandomRoast() {
+                if (availableRoasts.length === 0) {
+                    availableRoasts = [...allRoasts];
+                }
+                const randomIndex = Math.floor(Math.random() * availableRoasts.length);
+                const selectedRoast = availableRoasts[randomIndex];
+                availableRoasts.splice(randomIndex, 1);
+                return selectedRoast;
+            }
+
+            // Gomb kattintás kezelése
+            generateBtn.addEventListener('click', () => {
+                const roast = getRandomRoast();
+                roastTextElement.textContent = roast;
+                roastBox.classList.add('shake-animation');
+                
+                setTimeout(() => {
+                    roastBox.classList.remove('shake-animation');
+                }, 500);
+            });
+
+            // Roast szöveg másolása kattintásra
+            roastBox.addEventListener('click', () => {
+                const textToCopy = roastTextElement.textContent;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = roastTextElement.textContent;
+                    roastTextElement.textContent = "COPIED!";
+                    setTimeout(() => {
+                        roastTextElement.textContent = originalText;
+                    }, 1000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            });
+
+            // Token cím másolása kattintásra
+            tokenAddressBox.addEventListener('click', () => {
+                const addressText = tokenAddressElement.textContent.replace('CA: ', '').trim();
+                navigator.clipboard.writeText(addressText).then(() => {
+                    const originalText = tokenAddressElement.textContent;
+                    tokenAddressElement.textContent = "COPIED!";
+                    setTimeout(() => {
+                        tokenAddressElement.textContent = originalText;
+                    }, 1000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
