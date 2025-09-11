@@ -3,18 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROASTER - The Ultimate Crypto Roast Generator</title>
+    <title>$ROASTER - The Ultimate Crypto Roast Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.58/build/Tone.js"></script>
     <style>
         :root {
             --bg-color: #fedd59;
             --text-color: #ff6347;
             --accent-color: #ffde59;
             --box-bg: rgba(0, 0, 0, 0.1);
+            --section-bg: rgba(255, 255, 255, 0.5);
+            --header-bg: #fff;
         }
-        
+
+        /* Navigation bar at the top */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            background: #000;
+            width: 100%;
+            z-index: 1000;
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .sticky-nav a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-family: 'Luckiest Guy', sans-serif;
+            font-size: 1.2rem;
+            padding: 0 1.5rem;
+            transition: color 0.2s, transform 0.2s;
+            display: inline-block;
+        }
+
+        .sticky-nav a:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Visual effects */
         @keyframes wiggle {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(5deg); }
@@ -22,7 +56,7 @@
             75% { transform: rotate(5deg); }
             100% { transform: rotate(0deg); }
         }
-        
+
         @keyframes shake-animation {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -38,23 +72,43 @@
         }
 
         @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
         }
-        
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes roast-burst {
+            0% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 0, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 0, 1), inset 0 0 20px rgba(255, 255, 0, 1); }
+            100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
+        }
+
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
         body {
-            font-family: 'Bangers', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             padding: 1rem;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .background-meme {
@@ -64,49 +118,63 @@
             opacity: 0.15;
             z-index: 1;
             animation: float 4s infinite ease-in-out;
+            filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
         }
-        
+
         .shake-animation {
             animation: shake-animation 0.5s cubic-bezier(.36, .07, .19, .97) both;
             transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
             perspective: 1000px;
         }
-        
+
+        .bounce-animation {
+            animation: bounce 0.3s ease-in-out;
+        }
+
+        .roast-burst-animation {
+            animation: roast-burst 0.5s ease-out;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 960px;
             width: 100%;
             text-align: center;
             position: relative;
             z-index: 10;
         }
-        
+
         header {
             padding-bottom: 2rem;
+            border-bottom: 4px solid #000;
+            margin-bottom: 2rem;
         }
-        
+
         .roaster-logo-image {
-            width: 250px; /* Kép méretének növelése */
+            width: 400px;
             height: auto;
             display: block;
             margin: 0 auto 1rem;
+            filter: drop-shadow(8px 8px 0 #000);
         }
-        
+
         .logo {
+            font-family: 'Bangers', sans-serif;
             font-size: 5rem;
             font-weight: 700;
             color: var(--accent-color);
-            text-shadow: 
+            text-shadow:
                 -2px -2px 0 #000,
                 2px -2px 0 #000,
                 -2px 2px 0 #000,
                 2px 2px 0 #000,
                 0 0 10px var(--accent-color),
                 0 0 20px var(--accent-color);
-            animation: wiggle 0.5s infinite ease-in-out;
+            animation: wiggle 0.5s infinite ease-in-out, glitch 2s infinite linear;
         }
-        
+
         .tagline {
+            font-family: 'Poppins', sans-serif;
             font-size: 1.5rem;
             color: #000;
             margin-top: 0.5rem;
@@ -119,14 +187,14 @@
             margin-left: 10px;
             vertical-align: middle;
         }
-        
+
         .social-link img {
             width: 40px;
             height: auto;
             transition: transform 0.2s;
             cursor: pointer;
         }
-        
+
         .social-link img:hover {
             transform: scale(1.1);
         }
@@ -143,21 +211,24 @@
             margin-bottom: 2rem;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             cursor: pointer;
+            transition: box-shadow 0.5s ease-out;
         }
-        
+
         .roast-text {
+            font-family: 'Luckiest Guy', sans-serif;
             font-size: 2rem;
             font-weight: 700;
             color: #000;
             opacity: 0.8;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
         }
-        
+
         .generate-btn {
             background-color: var(--accent-color);
             color: #000;
             border: none;
             padding: 1rem 3rem;
+            font-family: 'Luckiest Guy', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
             border-radius: 5px;
@@ -165,10 +236,16 @@
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--accent-color), 0 0 5px rgba(0, 0, 0, 0.4);
         }
-        
+
         .generate-btn:hover {
             transform: scale(1.05) rotate(-3deg);
             box-shadow: 0 0 25px var(--accent-color), 0 0 50px var(--accent-color), 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .share-btn {
+            background-color: #000;
+            color: #fff;
+            margin-left: 1rem;
         }
 
         .token-address-box {
@@ -186,12 +263,127 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
 
-        .token-address-box p {
+        .token-address {
             margin: 0;
-            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
             color: #000;
             font-weight: bold;
             text-shadow: none;
+        }
+        
+        .token-address-ca {
+            font-family: 'Luckiest Guy', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-shadow: none;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .section {
+            background-color: var(--section-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 3px dashed #000;
+            margin-bottom: 3rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .section h2 {
+            font-family: 'Luckiest Guy', sans-serif;
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 1.5rem;
+        }
+
+        .lore-text p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #333;
+            text-shadow: none;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .roadmap-item .icon {
+            font-size: 2rem;
+            min-width: 50px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .roadmap-item h3 {
+            font-family: 'Luckiest Guy', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .roadmap-item p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #555;
+            text-shadow: none;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid #000;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .team-member h3 {
+            font-family: 'Luckiest Guy', sans-serif;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        .team-member p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #444;
         }
 
         footer {
@@ -208,53 +400,148 @@
     </style>
 </head>
 <body>
-    <!-- Randomly floating meme characters in the background -->
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 10%; left: 5%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 30%; left: 80%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 55%; left: 15%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 75%; left: 60%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 20%; left: 45%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 85%; left: 30%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 40%; left: 90%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 60%; left: 50%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 5%; left: 70%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 90%; left: 10%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 25%; left: 25%;">
-    <img src="x (62).png" alt="Roaster logo image" class="background-meme" style="top: 70%; left: 40%;">
-    
+    <!-- Floating meme characters in the background -->
+    <img src="https://i.imgflip.com/4q0d18.png" alt="Trollface meme" class="background-meme" style="top: 10%; left: 5%;">
+    <img src="https://i.imgflip.com/6c0b5f.png" alt="Feels good man meme" class="background-meme" style="top: 30%; left: 80%;">
+    <img src="https://i.imgflip.com/492h9x.jpg" alt="Doge meme" class="background-meme" style="top: 55%; left: 15%;">
+    <img src="https://i.imgflip.com/83p14.png" alt="Okay guy meme" class="background-meme" style="top: 75%; left: 60%;">
+    <img src="https://i.imgflip.com/2s46u8.png" alt="Pepe the frog meme" class="background-meme" style="top: 20%; left: 45%;">
+    <img src="https://i.imgflip.com/409d94.png" alt="Big brain meme" class="background-meme" style="top: 85%; left: 30%;">
+    <img src="https://i.imgflip.com/39a6j0.png" alt="Surprised Pikachu meme" class="background-meme" style="top: 40%; left: 90%;">
+    <img src="https://i.imgflip.com/13k5g2.png" alt="Think about it meme" class="background-meme" style="top: 60%; left: 50%;">
+    <img src="https://i.imgflip.com/26c2e3.jpg" alt="Woman yelling at a cat meme" class="background-meme" style="top: 5%; left: 70%;">
+    <img src="https://i.imgflip.com/26c2e3.jpg" alt="Woman yelling at a cat meme" class="background-meme" style="top: 90%; left: 10%;">
+    <img src="https://i.imgflip.com/26c2e3.jpg" alt="Woman yelling at a cat meme" class="background-meme" style="top: 25%; left: 25%;">
+    <img src="https://i.imgflip.com/26c2e3.jpg" alt="Woman yelling at a cat meme" class="background-meme" style="top: 70%; left: 40%;">
+
+    <div class="sticky-nav">
+        <a href="#lore">Lore</a>
+        <a href="#roast-generator">Generator</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#team">Team</a>
+    </div>
+
     <div class="container">
         <header>
             <div>
                 <!-- Image added here -->
                 <img src="x (62).png" alt="Roaster logo image" class="roaster-logo-image">
-                <h1 class="logo">ROASTER</h1>
+                <h1 class="logo">$ROASTER</h1>
                 <p class="tagline">Generate a random roast and share it with your crypto community to laugh together. Or cry.
-                    <!-- Insert the Twitter/X link here. -->
-                    <a href="https://twitter.com/your-profile" target="_blank" class="social-link">
-                        <img src="xlogo.png" alt="X (Twitter) Icon">
+                    <!-- X/Twitter link here. -->
+                    <a href="https://twitter.com/Roaster_Memecoin" target="_blank" class="social-link">
+                        <img src="https://img.icons8.com/color/48/twitter--v1.png" alt="X (Twitter) Icon">
                     </a>
                 </p>
             </div>
         </header>
 
         <main>
-            <div id="roast-box" class="roast-box">
-                <p id="roast-text" class="roast-text">Click the button to send the first roast to the moon.</p>
-            </div>
-            <button id="generate-btn" class="generate-btn">GENERATE ROAST</button>
+            <!-- Lore Section -->
+            <section id="lore" class="section">
+                <h2>The Lore: A Degen's Tale</h2>
+                <div class="lore-text">
+                    <p>In the desolate landscape of the post-bull run era, a great sadness fell upon the degen world. The calls of "WAGMI" turned to whispers of "GM," and the once vibrant crypto towns were haunted by the ghosts of rug pulls and the echoes of "Wen Lambo?" A silent, digital depression took hold, fueled by endless red charts and the bitter taste of missed airdrops.</p>
+                    <p>Amidst this despair, a prophecy was spoken in the deepest depths of the dankest Telegram channels. It foretold of a hero not of riches, but of wit. A legend not of a pump, but of a punchline. This hero would not bring another utility coin or a pointless JPEG collection. Instead, it would unleash a new era of joyous brutality: **The Roast.**</p>
+                    <p>ROASTER was born from this void. Our mission is not to make you rich (although, who knows?), but to make you laugh. We are the antidote to the endless shilling, the cure for terminal seriousness. We believe that a well-timed, savage roast can do more for community morale than any whitepaper. We encourage our holders to take the roasts generated on this sacred site and use them to spark joy and chaos across the Twitterverse.</p>
+                    <p>This is more than a coin; it's a movement. A movement to bring back the good times, one burn at a time.</p>
+                </div>
+            </section>
+            
+            <hr>
 
-            <!-- New text box for the token address -->
-            <div id="token-address-box" class="token-address-box">
-                <p id="token-address">CA: 0xAbcDeFg1234567890aBcDeFg1234567890aBcDeF</p>
-            </div>
+            <!-- Roast Generator Section -->
+            <section id="roast-generator" class="section">
+                <h2>The Roast Generator</h2>
+                <div id="roast-box" class="roast-box">
+                    <p id="roast-text" class="roast-text">Click the button to send the first roast to the moon.</p>
+                </div>
+                <button id="generate-btn" class="generate-btn">GENERATE ROAST</button>
+                <button id="share-btn" class="generate-btn share-btn">SHARE ON X</button>
+
+                <!-- New text box for the token address -->
+                <div id="token-address-box" class="token-address-box">
+                    <p id="token-address" class="token-address"><span class="token-address-ca">CA:</span> xxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+                </div>
+            </section>
+            
+            <hr>
+            
+            <!-- Roadmap Section -->
+            <section id="roadmap" class="section">
+                <h2>Roaster Roadmap</h2>
+                <div class="roadmap-item">
+                    <div class="icon">📜</div>
+                    <div>
+                        <h3>Phase I: Genesis & Inception</h3>
+                        <p>Creation of the ROASTER smart contract (with 100% chance of being bug-free, probably). Deployment of the website (this one!) and airdrop to the founders' moms for maximum decentralization. Initial meme production begins. This is our serious face.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="icon">🔥</div>
+                    <div>
+                        <h3>Phase II: The Great Burning</h3>
+                        <p>Community meme contest initiated. Winners receive eternal glory and a small amount of token. Development of a secret algorithm that ensures the most cringe posts on Twitter get publicly roasted first. We will hire a professional roaster (comedian) as a consultant, pay them in token, and then roast them.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="icon">🚀</div>
+                    <div>
+                        <h3>Phase III: Meme-Powered Liquidity</h3>
+                        <p>Listing on a CEX (if they're worthy). Partnership with a prominent influencer who will be mercilessly roasted in every post to prove our commitment to the mission. We will launch a decentralized autonomous organization (DAO) where community members vote on which cringe project to roast next. The voting will be done via a highly secure blockchain poll. This is a very serious project.  </p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="icon">🌍</div>
+                    <div>
+                        <h3>Phase IV: Global Roasting Supremacy</h3>
+                        <p>ROASTER becomes a household name. We will be mentioned in mainstream media articles that don't understand blockchain, and we will be fine with it. A partnership with Elon Musk is 100% on the table, if he agrees to be our first official roast target. The goal is to bring laughter and a little bit of chaos to every corner of the world.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <hr>
+
+            <!-- Team Section -->
+            <section id="team" class="section">
+                <h2>Our Degenerate Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="https://i.imgflip.com/6c0b5f.png" alt="Meme Lord" title="The ultimate Roast Master" />
+                        <h3>Meme Lord</h3>
+                        <p>Lead Roaster & Chief Meme Officer. Fluent in GIF, dreams in Dogecoin.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://i.imgflip.com/2s46u8.png" alt="The Architect" title="Solidity Guru" />
+                        <h3>The Architect</h3>
+                        <p>Smart Contract Dev. Finds joy in debugging Solidity and chaos.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://i.imgflip.com/83p14.png" alt="The Hype Engine" title="Community Hype Master" />
+                        <h3>The Hype Engine</h3>
+                        <p>Community Manager. Has a PhD in shitposting and community engagement.</p>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer>
-            <p>&copy; 2025 ROASTER. All rights reserved.</p>
+            <p>&copy; 2025 $ROASTER. All rights reserved. The community is the real utility.</p>
         </footer>
     </div>
     <script>
         const allRoasts = [
+            "Your brain is 90% Twitter screenshots and 10% regret.",
+            "You have the charisma of a 'wen rug' Telegram bot.",
+            "Your project's market cap is a rounding error on my calculator.",
+            "I've seen more utility in a broken link.",
+            "You're the reason we can't have nice things, like a stable coin.",
+            "If cringe was a crypto, you'd be a multi-billion dollar project.",
+            "Your chart looks like a seismograph of my life's disappointments.",
+            "You're not just a paper hands, you're a paper everything.",
+            "Your diamond hands are made of old printer paper and hope.",
+            "The only thing you're building is my patience.",
+            "I'd trust a random JPEG more than your 'roadmap'.",
             "You have a face that would make onions cry.",
             "I look at you and think, “Two billion years of evolution, for this?”",
             "I am jealous of all the people that have never met you.",
@@ -369,13 +656,29 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const generateBtn = document.getElementById('generate-btn');
+            const shareBtn = document.getElementById('share-btn');
             const roastBox = document.getElementById('roast-box');
             const roastTextElement = document.getElementById('roast-text');
             const tokenAddressBox = document.getElementById('token-address-box');
             const tokenAddressElement = document.getElementById('token-address');
 
+            // Tone.js hanghatások
+            const synth = new Tone.Synth({
+                oscillator: { type: "triangle" },
+                envelope: {
+                    attack: 0.005,
+                    decay: 0.1,
+                    sustain: 0.05,
+                    release: 0.2
+                }
+            }).toDestination();
+
+            function playBlipSound() {
+                synth.triggerAttackRelease("C5", "8n");
+            }
+
             let availableRoasts = [...allRoasts];
-            
+
             function getRandomRoast() {
                 if (availableRoasts.length === 0) {
                     availableRoasts = [...allRoasts];
@@ -386,39 +689,57 @@
                 return selectedRoast;
             }
 
-            // Button click handler
+            // Gomb kattintás kezelője
             generateBtn.addEventListener('click', () => {
                 const roast = getRandomRoast();
                 roastTextElement.textContent = roast;
                 roastBox.classList.add('shake-animation');
+                roastBox.classList.add('roast-burst-animation');
+                playBlipSound();
                 
                 setTimeout(() => {
                     roastBox.classList.remove('shake-animation');
+                    roastBox.classList.remove('roast-burst-animation');
                 }, 500);
             });
 
-            // Copy roast text on click
+            // Megosztás X-en (Twitter) funkció
+            shareBtn.addEventListener('click', () => {
+                const roastText = roastTextElement.textContent;
+                const hashtag = " #ROASTER";
+                const tweetText = encodeURIComponent(roastText + hashtag);
+                const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+                window.open(tweetUrl, '_blank');
+            });
+
+            // Roast szöveg másolása kattintásra
             roastBox.addEventListener('click', () => {
                 const textToCopy = roastTextElement.textContent;
                 navigator.clipboard.writeText(textToCopy).then(() => {
+                    roastBox.classList.add('bounce-animation');
                     const originalText = roastTextElement.textContent;
                     roastTextElement.textContent = "COPIED!";
+                    playBlipSound();
                     setTimeout(() => {
                         roastTextElement.textContent = originalText;
+                        roastBox.classList.remove('bounce-animation');
                     }, 1000);
                 }).catch(err => {
                     console.error('Failed to copy text: ', err);
                 });
             });
 
-            // Copy token address on click
+            // Token cím másolása kattintásra
             tokenAddressBox.addEventListener('click', () => {
                 const addressText = tokenAddressElement.textContent.replace('CA: ', '').trim();
                 navigator.clipboard.writeText(addressText).then(() => {
+                    tokenAddressBox.classList.add('bounce-animation');
                     const originalText = tokenAddressElement.textContent;
                     tokenAddressElement.textContent = "COPIED!";
+                    playBlipSound();
                     setTimeout(() => {
                         tokenAddressElement.textContent = originalText;
+                        tokenAddressBox.classList.remove('bounce-animation');
                     }, 1000);
                 }).catch(err => {
                     console.error('Failed to copy text: ', err);
